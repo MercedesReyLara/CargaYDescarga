@@ -11,22 +11,20 @@ fun Ej2del11() {
         if (opcion == "1") {
             do {
 
-                    println("***BIENVENIDO AL PROGRAMA DE CARGA DE CONTENEDORES***")
-                    print("Introduzca el numero del contenedor por favor: ")
-                    var num: String = readLine().toString()
-                    var numC: Int = num.toInt()
-                        print("Introduzca país de origen: ")
-                        var paisO: String? = readLine()
-                        var paisOrigen: String = paisO.toString()
-                        print("Introduzca país de destino: ")
-                        var paisD: String? = readLine()
-                        var paisDestino: String = paisD.toString()
 
-                        val cT = Contenedor(numC, paisOrigen, paisDestino, Estados.TRANSITO)
+                println("***BIENVENIDO AL PROGRAMA DE CARGA DE CONTENEDORES***")
+                print("Introduzca país de origen: ")
+                var paisO: String? = readLine()
+                var paisOrigen: String = paisO.toString()
+                print("Introduzca país de destino: ")
+                var paisD: String? = readLine()
+                var paisDestino: String = paisD.toString()
+
+                val cT = Contenedor(paisOrigen, paisDestino, Estados.TRANSITO)
 
 
-                        listC.add(cT)
-                        println("CONTENEDOR CARGADO CON EXITO")
+                listC.add(cT)
+                println("CONTENEDOR CARGADO CON EXITO")
 
                 var salir0: Boolean = false
                 print("¿Desea seguir cargando contenedores(S/N)? ")
@@ -41,36 +39,37 @@ fun Ej2del11() {
                 print("Introduzca el numero del contenedor que desea descargar: ")
                 var tmp: String = readLine().toString()
                 var numC: Int = tmp.toInt()
-                for (c in listC) {
-                    if (numC == c.numContenedor) {
-                        println("***DESCARGANDO CONTENEDOR***")
-                        print("Seleccione la causa(RETENIDO/ENTREGADO): ")
-                        var causa: String? = readLine()
-                        if (causa == "RETENIDO") {
-                            c.estado = Estados.RETENIDO
-                        } else if (causa == "ENTREGADO") {
-                            c.estado = Estados.ENTREGADO
-                            print("¿EL CONTENEDOR ESTA ENTREGADO, DESEA ELIMINARLO DE LA LISTA(S/N)?")
-                            var respuesta: String? = readLine()
-                            if (respuesta == "S") {
-                                listC.remove(c)
-                                println("CONTENEDOR ELIMINADO DE LA LISTA")
-                            }
+                println("***DESCARGANDO CONTENEDOR***")
+                print("Seleccione la causa(RETENIDO/ENTREGADO): ")
+                var causa: String? = readLine()
+                if (causa == "RETENIDO") {
+                    for ((c,a) in listC.withIndex()) {
+                        if (numC == c) {
+                            a.estado = Estados.RETENIDO
+                            break
+                        } else {
+                            println("NUMERO DE CONTENEDOR NO EXISTENTE")
                         }
-
-                    } else {
-                        print("NUMERO DE CONTENEDOR NO EXISTENTE")
                     }
-                    break
+                } else if (causa == "ENTREGADO") {
+                    print("¿Desea eliminar el contenedor?: ")
+                    var tmp: String = readLine().toString()
+                    if (tmp == "S" || tmp == "s") {
+                        try {
+                            listC.removeAt(numC)
+                        } catch (e: ArrayIndexOutOfBoundsException) {
+                            println("NO SE PUEDE ELIMINAR")
+                        }
+                    }
                 }
-                var salir1: Boolean = false
-                print("¿Desea seguir descargando(S/N)? ")
-                var conf: String? = readLine()
-                if (conf == "N") {
-                    salir1 = true
+                var salir2: Boolean = false
+                print("Desea seguir haciendo operaciones(S/N)? ")
+                var tmp3: String? = readLine()
+                var resp: String = tmp3.toString()
+                if (resp == "N") {
+                    salir2 = true
                 }
-            } while (!salir1)
-
+            } while (!salir2)
         } else if (opcion == "3") {
             for (c in listC) {
                 c.ImprimirC()
